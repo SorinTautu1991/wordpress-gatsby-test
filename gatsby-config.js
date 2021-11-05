@@ -5,6 +5,7 @@ module.exports = {
     author: `@tomphill`,
   },
   plugins: [
+    `gatsby-plugin-styled-components`,
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
@@ -46,8 +47,12 @@ module.exports = {
           "**/tags",
           "**/taxonomies",
           "**/users",
+          "**/*/*/menus",
+          "**/*/*/portfolio",
+          "**/*/*/logo",
+          "**/*/*/favicon",
         ],
       },
     },
   ],
-}
+};

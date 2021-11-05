@@ -1,51 +1,49 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
+import React from "react";
+import MainMenu from "./MainMenu";
+import styled, { createGlobalStyle } from "styled-components";
+import { Helmet } from "react-helmet";
+import { graphql, useStaticQuery } from "gatsby";
 
-import React from "react"
-import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
+const GlobalStyles = createGlobalStyle`
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Zen+Kurenaido&display=swap');
+  body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+`;
 
-import Header from "./header"
-import "./layout.css"
+const LayoutWrapper = styled.div`
+  max-width: 960px;
+  margin: 0 auto;
+`;
 
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
+  const {
+    allWordpressWpFavicon: { edges },
+  } = useStaticQuery(graphql`
+    {
+      allWordpressWpFavicon {
+        edges {
+          node {
+            url {
+              source_url
+            }
+          }
         }
       }
     }
-  `)
-
+  `);
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata.title} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-        }}
-      >
-        <main>{children}</main>
-        <footer>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
-        </footer>
-      </div>
+      <Helmet>
+        <link rel="icon" href={edges[0].node.url.source_url} />
+      </Helmet>
+      <GlobalStyles />
+      <MainMenu />
+      <LayoutWrapper>{children}</LayoutWrapper>
     </>
-  )
-}
+  );
+};
 
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-}
-
-export default Layout
+export default Layout;
