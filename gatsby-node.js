@@ -1,7 +1,13 @@
 const path = require("path");
 
 exports.createPages = async ({ graphql, actions }) => {
-  const { createPage } = actions;
+  const { createPage, createRedirect } = actions;
+  createRedirect({
+    fromPath: "/",
+    toPath: "/home",
+    redirectInBrowser: true,
+    isPermanent: true,
+  });
   const result = await graphql(`
     {
       allWordpressPage {
